@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -13,10 +12,10 @@ class Post extends Model
     protected $table = 'post';
 
     // apa aja yang boleh di isi
-    public $fillable = ['title','content'];
+    public $fillable = ['title', 'content'];
 
     // apa aja yang boleh di tampilkan
-    public $visible = ['title','content'];
+    public $visible = ['id', 'title', 'content'];
 
     // mengisi tanggal kapan dibuat dan kapan di update secara otomatis
     public $timestamps = true;
