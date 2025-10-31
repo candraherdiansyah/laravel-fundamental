@@ -9,7 +9,6 @@
                         {{ __('Mahasiswa') }}
                     </div>
                     <div class="float-end">
-                        <a href="{{ route('mahasiswa.create') }}" class="btn btn-sm btn-outline-primary">Tambah Data</a>
                     </div>
                 </div>
 

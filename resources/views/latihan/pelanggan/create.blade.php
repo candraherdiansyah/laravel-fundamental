@@ -10,17 +10,17 @@
                         Tambah Produk
                     </div>
                     <div class="float-end">
-                        <a href="{{ route('produk.index') }}" class="btn btn-sm btn-outline-primary">Kembali</a>
+                        <a href="{{ route('pelanggan.index') }}" class="btn btn-sm btn-outline-primary">Kembali</a>
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('pelanggan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Nama Produk</label>
+                            <label class="form-label">Nama Pelanggan</label>
                             <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
-                                value="{{ old('nama') }}" placeholder="produk Name" required>
+                                value="{{ old('nama') }}" placeholder="Nama Pelanggan" required>
                             @error('nama')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -28,32 +28,20 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Harga Produk</label>
-                            <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga"
-                                value="{{ old('harga') }}" placeholder="Harga" required>
-                            @error('harga')
+                            <label class="form-label">No Telepon</label>
+                            <input type="number" class="form-control @error('no_telepon') is-invalid @enderror"
+                                name="no_telepon" value="{{ old('no_telepon') }}" placeholder="no_telepon" required>
+                            @error('no_telepon')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Deskripsi</label>
-                            <textarea class="form-control" class="form-control @error('deskirpsi') is-invalid @enderror"
-                                name="deskripsi" value="{{ old('deskirpsi') }}" rows="3" placeholder="deskirpsi"
-                                required></textarea>
-                            @error('deskirpsi')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Image</label>
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" name="image"
-                                value="{{ old('image') }}" required></input>
-                            @error('image')
+                            <label class="form-label">alamat</label>
+                            <textarea class="form-control @error('alamat') is-invalid @enderror" name="alamat" rows="3"
+                                placeholder="alamat" required>{{ old('alamat') }}</textarea>
+                            @error('alamat')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

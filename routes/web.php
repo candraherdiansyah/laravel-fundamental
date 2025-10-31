@@ -149,3 +149,10 @@ Route::get('eloquent', [RelasiController::class, 'eloquent']);
 Route::resource('mahasiswa', App\Http\Controllers\MahasiswaController::class);
 // CRUD One To One
 Route::resource('wali', App\Http\Controllers\WaliController::class);
+
+Route::prefix('latihan')->group(function () {
+    Route::resource('pelanggan', App\Http\Controllers\PelangganController::class);
+    Route::resource('produk', App\Http\Controllers\ProdukController::class);
+    Route::resource('transaksi', App\Http\Controllers\TransaksiController::class);
+    Route::resource('pembayaran', App\Http\Controllers\PembayaranController::class);
+})->middleware('auth');

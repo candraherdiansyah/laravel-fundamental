@@ -22,8 +22,8 @@
                                     <th>No</th>
                                     <th>Nama Produk</th>
                                     <th>Harga</th>
-                                    <th>Deskripsi</th>
-                                    <th>Image</th>
+                                    <th>Stok</th>
+
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -32,13 +32,9 @@
                                 @forelse ($produk as $data)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td>{{ $data->nama }}</td>
+                                    <td>{{ $data->nama_produk }}</td>
                                     <td>{!! $data->harga !!}</td>
-                                    <td>{{ $data->deskripsi}}</td>
-                                    <td>
-                                        <img src="{{ Storage::url($data->image)  }}" class="rounded"
-                                            style="width: 150px">
-                                    </td>
+                                    <td>{{ $data->stok}}</td>
                                     <td>
                                         <form action="{{ route('produk.destroy', $data->id) }}" method="POST">
                                             @csrf
