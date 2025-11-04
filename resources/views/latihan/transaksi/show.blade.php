@@ -9,6 +9,8 @@
         </div>
 
         <div class="card-body">
+
+            {{-- Informasi Transaksi --}}
             <h6 class="fw-bold mb-3">Informasi Transaksi</h6>
             <table class="table table-sm table-bordered mb-4">
                 <tr>
@@ -29,6 +31,7 @@
                 </tr>
             </table>
 
+            {{-- Detail Produk --}}
             <h6 class="fw-bold mb-3">Detail Produk</h6>
             <table class="table table-striped table-bordered">
                 <thead class="table-light">
@@ -41,16 +44,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($transaksi->detailTransaksi as $detail)
+                    @foreach($transaksi->produks as $prod)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $detail->produk->nama_produk }}</td>
-                        <td>Rp {{ number_format($detail->produk->harga, 0, ',', '.') }}</td>
-                        <td>{{ $detail->jumlah }}</td>
-                        <td>Rp {{ number_format($detail->sub_total, 0, ',', '.') }}</td>
+                        <td>{{ $prod->nama_produk }}</td>
+                        <td>Rp {{ number_format($prod->harga, 0, ',', '.') }}</td>
+                        <td>{{ $prod->pivot->jumlah }}</td>
+                        <td>Rp {{ number_format($prod->pivot->sub_total, 0, ',', '.') }}</td>
                     </tr>
                     @endforeach
                 </tbody>
+
                 <tfoot class="table-secondary">
                     <tr>
                         <th colspan="4" class="text-end">Total</th>

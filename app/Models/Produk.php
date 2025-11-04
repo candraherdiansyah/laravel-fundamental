@@ -8,8 +8,10 @@ class Produk extends Model
     protected $fillable = ['nama_produk', 'stok', 'harga'];
     protected $visible  = ['nama_produk', 'stok', 'harga'];
 
-    public function transaksi()
+    public function transaksis()
     {
-        return $this->hasMany(Transaksi::class, 'id_produk');
+        return $this->belongsToMany(Transaksi::class, 'detail_transaksi', 'id_produk', 'id_transaksi')
+                    ->withPivot('jumlah', 'sub_total')
+                    ->withTimestamps();
     }
 }

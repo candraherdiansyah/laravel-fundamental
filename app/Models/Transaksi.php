@@ -10,12 +10,13 @@ class Transaksi extends Model
     {
         return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
     }
-    public function produk()
+
+    // Relasi many-to-many ke produk lewat tabel pivot "detail_transaksi"
+    public function produks()
     {
-        return $this->belongsTo(Produk::class, 'id_produk');
+        return $this->belongsToMany(Produk::class, 'detail_transaksi', 'id_transaksi', 'id_produk')
+                    ->withPivot('jumlah', 'sub_total')
+                    ->withTimestamps();
     }
-    public function detailTransaksi()
-    {
-        return $this->hasMany(DetailTransaksi::class, 'id_transaksi');
-    }
+
 }

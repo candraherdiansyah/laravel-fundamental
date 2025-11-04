@@ -4,7 +4,7 @@
 <div class="container">
     <h3 class="mb-4">Tambah Transaksi Baru</h3>
 
-    {{-- Notifikasi --}}
+    {{-- Notifikasi Error --}}
     @if ($errors->any())
     <div class="alert alert-danger">
         <strong>Terjadi kesalahan:</strong>
@@ -16,12 +16,12 @@
     </div>
     @endif
 
-    <div class="card">
+    <div class="card shadow-sm">
         <div class="card-body">
-            {{-- Form Transaksi --}}
             <form action="{{ route('transaksi.store') }}" method="POST">
                 @csrf
 
+                {{-- Pilih Pelanggan --}}
                 <div class="mb-3">
                     <label for="id_pelanggan" class="form-label">Pelanggan</label>
                     <select name="id_pelanggan" id="id_pelanggan" class="form-select" required>
@@ -36,8 +36,9 @@
 
                 <h5>Daftar Produk</h5>
 
+                {{-- Wrapper Produk --}}
                 <div id="produk-wrapper">
-                    <div class="row produk-item mb-2">
+                    <div class="row produk-item mb-3">
                         <div class="col-md-5">
                             <label class="form-label">Produk</label>
                             <select name="id_produk[]" class="form-select produk-select" required>
@@ -52,26 +53,25 @@
 
                         <div class="col-md-3">
                             <label class="form-label">Jumlah</label>
-                            <input type="number" name="jumlah[]" class="form-control jumlah-input" min="1" value="1"
-                                required>
+                            <input type="number" name="jumlah[]" class="form-control jumlah-input" min="1" value="1" required>
                         </div>
 
                         <div class="col-md-3">
                             <label class="form-label">Subtotal</label>
-                            <input type="text" class="form-control subtotal" readonly value="0">
+                            <input type="text" class="form-control subtotal" readonly value="Rp0">
                         </div>
 
                         <div class="col-md-1 d-flex align-items-end">
-                            <button type="button" class="btn btn-danger btn-remove w-50">×</button>
+                            <button type="button" class="btn btn-danger btn-remove w-100">×</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="mb-3 text-end">
+                <div class="text-end mb-3">
                     <button type="button" class="btn btn-sm btn-secondary" id="btn-add">+ Tambah Produk</button>
                 </div>
 
-                <div class="mb-3 text-end">
+                <div class="text-end mb-4">
                     <h5>Total Harga: <span id="totalHarga">Rp0</span></h5>
                 </div>
 
@@ -81,10 +81,11 @@
             </form>
         </div>
     </div>
+</div>
 
-    {{-- Script perhitungan sederhana --}}
-    <script>
-        function hitungSubtotal() {
+{{-- Script JS --}}
+<script>
+    function hitungSubtotal() {
         let total = 0;
         document.querySelectorAll('.produk-item').forEach(item => {
             let select = item.querySelector('.produk-select');
@@ -93,25 +94,29 @@
 
             let harga = select.selectedOptions[0]?.getAttribute('data-harga') || 0;
             let sub = parseInt(harga) * parseInt(jumlah.value || 0);
+
             subtotalInput.value = 'Rp' + sub.toLocaleString('id-ID');
             total += sub;
         });
+
         document.getElementById('totalHarga').innerText = 'Rp' + total.toLocaleString('id-ID');
     }
 
     document.addEventListener('input', hitungSubtotal);
     document.addEventListener('change', hitungSubtotal);
 
+    // Tambah produk baru
     document.getElementById('btn-add').addEventListener('click', function() {
         let wrapper = document.getElementById('produk-wrapper');
         let newRow = wrapper.firstElementChild.cloneNode(true);
 
-        newRow.querySelectorAll('input').forEach(i => i.value = i.classList.contains('jumlah-input') ? 1 : 0);
+        newRow.querySelectorAll('input').forEach(i => i.value = i.classList.contains('jumlah-input') ? 1 : 'Rp0');
         newRow.querySelector('.produk-select').value = '';
 
         wrapper.appendChild(newRow);
     });
 
+    // Hapus produk
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('btn-remove')) {
             let items = document.querySelectorAll('.produk-item');
@@ -121,5 +126,5 @@
             }
         }
     });
-    </script>
-    @endsection
+</script>
+@endsection

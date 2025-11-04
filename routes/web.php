@@ -123,7 +123,7 @@ Route::get('post/{id}', [PostController::class, 'show'])->name('post.show');
 Route::delete('post/{id}', [PostController::class, 'destroy'])->name('post.delete');
 
 // produk
-Route::resource('produk', App\Http\Controllers\ProdukController::class)->middleware('auth');
+// Route::resource('produk', App\Http\Controllers\ProdukController::class)->middleware('auth');
 
 // relasi
 use Illuminate\Support\Facades\Route;

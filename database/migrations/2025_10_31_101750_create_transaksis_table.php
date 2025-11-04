@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
             $table->string('kode_transaksi')->unique();
-            $table->foreignId('pelanggan_id')->constrained('pelanggans');
+            $table->foreignId('id_pelanggan')->constrained('pelanggans');
             $table->date('tanggal');
             $table->integer('total_harga');
             $table->timestamps();
