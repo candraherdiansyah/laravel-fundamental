@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Pelanggan;
@@ -18,7 +17,7 @@ class TransaksiController extends Controller
     public function create()
     {
         $pelanggan = Pelanggan::all();
-        $produk = Produk::all();
+        $produk    = Produk::all();
         return view('latihan.transaksi.create', compact('pelanggan', 'produk'));
     }
 
@@ -33,25 +32,25 @@ class TransaksiController extends Controller
         ]);
 
         // Buat transaksi utama dulu
-        $kode = 'TRX-' . strtoupper(uniqid());
-        $transaksi = new Transaksi();
+        $kode                      = 'TRX-' . strtoupper(uniqid());
+        $transaksi                 = new Transaksi();
         $transaksi->kode_transaksi = $kode;
-        $transaksi->id_pelanggan = $request->id_pelanggan;
-        $transaksi->tanggal = now();
-        $transaksi->total_harga = 0;
+        $transaksi->id_pelanggan   = $request->id_pelanggan;
+        $transaksi->tanggal        = now();
+        $transaksi->total_harga    = 0;
         $transaksi->save();
 
-        $totalHarga = 0;
+        $totalHarga  = 0;
         $produkPivot = [];
 
         foreach ($request->id_produk as $index => $produkId) {
-            $produk = Produk::findOrFail($produkId);
-            $jumlah = $request->jumlah[$index];
+            $produk   = Produk::findOrFail($produkId);
+            $jumlah   = $request->jumlah[$index];
             $subTotal = $produk->harga * $jumlah;
 
             // isi array untuk attach pivot
             $produkPivot[$produkId] = [
-                'jumlah' => $jumlah,
+                'jumlah'    => $jumlah,
                 'sub_total' => $subTotal,
             ];
 
@@ -81,7 +80,7 @@ class TransaksiController extends Controller
     {
         $transaksi = Transaksi::with('produks')->findOrFail($id);
         $pelanggan = Pelanggan::all();
-        $produk = Produk::all();
+        $produk    = Produk::all();
 
         return view('latihan.transaksi.edit', compact('transaksi', 'pelanggan', 'produk'));
     }
@@ -112,20 +111,20 @@ class TransaksiController extends Controller
 
         // update data transaksi
         $transaksi->id_pelanggan = $request->id_pelanggan;
-        $transaksi->tanggal = now();
-        $transaksi->total_harga = 0;
+        $transaksi->tanggal      = now();
+        $transaksi->total_harga  = 0;
         $transaksi->save();
 
-        $totalHarga = 0;
+        $totalHarga  = 0;
         $produkPivot = [];
 
         foreach ($request->id_produk as $index => $produkId) {
-            $produk = Produk::findOrFail($produkId);
-            $jumlah = $request->jumlah[$index];
+            $produk   = Produk::findOrFail($produkId);
+            $jumlah   = $request->jumlah[$index];
             $subTotal = $produk->harga * $jumlah;
 
             $produkPivot[$produkId] = [
-                'jumlah' => $jumlah,
+                'jumlah'    => $jumlah,
                 'sub_total' => $subTotal,
             ];
 
@@ -166,4 +165,15 @@ class TransaksiController extends Controller
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus dan stok dikembalikan!');
     }
+
+    public function search(Request $request)
+    {
+        $query     = $request->query('query');
+        $transaksi = Transaksi::with('pelanggan')
+            ->where('kode_transaksi', 'like', "%$query%")
+            ->get();
+
+        return response()->json($transaksi);
+    }
+
 }

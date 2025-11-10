@@ -151,8 +151,10 @@ Route::resource('mahasiswa', App\Http\Controllers\MahasiswaController::class);
 Route::resource('wali', App\Http\Controllers\WaliController::class);
 
 Route::prefix('latihan')->group(function () {
+    Route::get('/transaksi/search', [TransaksiController::class, 'search'])->name('transaksi.search');
     Route::resource('pelanggan', App\Http\Controllers\PelangganController::class);
     Route::resource('produk', App\Http\Controllers\ProdukController::class);
     Route::resource('transaksi', App\Http\Controllers\TransaksiController::class);
     Route::resource('pembayaran', App\Http\Controllers\PembayaranController::class);
+
 })->middleware('auth');
