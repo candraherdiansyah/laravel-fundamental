@@ -12,8 +12,7 @@
             {{-- Search --}}
             <form action="{{ route('pembayaran.index') }}" method="GET" class="mb-3">
                 <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Cari kode transaksi..."
-                        value="{{ $search }}">
+                    <input type="text" name="search" class="form-control" placeholder="Cari kode transaksi..." value="{{ $search }}">
                     <button class="btn btn-outline-primary" type="submit">Cari</button>
                     @if($search)
                     <a href="{{ route('pembayaran.index') }}" class="btn btn-outline-secondary">Reset</a>
@@ -23,10 +22,10 @@
 
             {{-- Alert sukses --}}
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
             @endif
 
             {{-- Table --}}
@@ -48,7 +47,7 @@
                         @forelse ($pembayarans as $pembayaran)
                         <tr>
                             <td>{{ $loop->iteration + ($pembayarans->currentPage() - 1) * $pembayarans->perPage() }}</td>
-                            <td>{{ $pembayaran->transaksi->kode ?? '-' }}</td>
+                            <td>{{ $pembayaran->transaksi->kode_transaksi ?? '-' }}</td>
                             <td>{{ $pembayaran->transaksi->pelanggan->nama ?? '-' }}</td>
                             <td>{{ \Carbon\Carbon::parse($pembayaran->tanggal_bayar)->format('d M Y') }}</td>
                             <td>
@@ -60,13 +59,12 @@
                             <td>Rp {{ number_format($pembayaran->kembalian, 0, ',', '.') }}</td>
                             <td class="text-center">
                                 <a href="{{ route('pembayaran.show', $pembayaran->id) }}" class="btn btn-sm btn-info text-white">
-                                    Detail
+                                    Show
                                 </a>
                                 <a href="{{ route('pembayaran.edit', $pembayaran->id) }}" class="btn btn-sm btn-warning text-white">
                                     Edit
                                 </a>
-                                <form action="{{ route('pembayaran.destroy', $pembayaran->id) }}" method="POST" class="d-inline"
-                                    onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                <form action="{{ route('pembayaran.destroy', $pembayaran->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">

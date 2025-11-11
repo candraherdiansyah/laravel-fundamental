@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
 {
-    protected $fillable = ['kode', 'id_pelanggan', 'id_produk', 'jumlah', 'total_harga'];
+    protected $fillable = ['kode_transaksi', 'id_pelanggan', 'id_produk', 'jumlah', 'total_harga'];
     public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
@@ -15,8 +15,13 @@ class Transaksi extends Model
     public function produks()
     {
         return $this->belongsToMany(Produk::class, 'detail_transaksi', 'id_transaksi', 'id_produk')
-                    ->withPivot('jumlah', 'sub_total')
-                    ->withTimestamps();
+            ->withPivot('jumlah', 'sub_total')
+            ->withTimestamps();
+    }
+
+    public function pembayaran()
+    {
+        return $this->hasOne(Pembayaran::class, 'id_transaksi');
     }
 
 }

@@ -26,14 +26,14 @@
 
                 {{-- Search Transaksi --}}
                 <div class="mb-3">
-                    <label class="form-label">Cari Kode Transaksi</label>
+                    <label class="form-label fw-semibold">Cari Kode Transaksi</label>
                     <input type="text" id="searchTransaksi" class="form-control" placeholder="Ketik kode transaksi...">
                     <ul id="searchResult" class="list-group mt-1" style="display: none;"></ul>
                 </div>
 
                 {{-- Info Transaksi --}}
                 <div id="transaksiInfo" style="display:none;">
-                    <input type="hidden" name="transaksi_id" id="transaksi_id">
+                    <input type="hidden" name="id_transaksi" id="id_transaksi">
 
                     <div class="mb-3">
                         <label class="form-label">Kode Transaksi</label>
@@ -96,10 +96,11 @@
         const totalHargaInput = document.getElementById('total_harga');
         const jumlahBayarInput = document.getElementById('jumlah_bayar');
         const kembalianInput = document.getElementById('kembalian');
+        const idTransaksiInput = document.getElementById('id_transaksi');
 
         // AJAX search transaksi
         searchInput.addEventListener('input', function() {
-            const query = this.value;
+            const query = this.value.trim();
             if (query.length < 2) {
                 searchResult.style.display = 'none';
                 return;
@@ -115,11 +116,10 @@
                             li.classList.add('list-group-item', 'list-group-item-action');
                             li.textContent = `${item.kode_transaksi} - ${item.pelanggan.nama} (Rp${parseInt(item.total_harga).toLocaleString('id-ID')})`;
                             li.addEventListener('click', () => {
-                                // Set Data
-                                document.getElementById('transaksi_id').value = item.id;
+                                idTransaksiInput.value = item.id;
                                 document.getElementById('kode_transaksi').value = item.kode_transaksi;
                                 document.getElementById('nama_pelanggan').value = item.pelanggan.nama;
-                                document.getElementById('total_harga').value = 'Rp' + parseInt(item.total_harga).toLocaleString('id-ID');
+                                totalHargaInput.value = 'Rp' + parseInt(item.total_harga).toLocaleString('id-ID');
 
                                 transaksiInfo.style.display = 'block';
                                 searchResult.style.display = 'none';
@@ -131,6 +131,9 @@
                     } else {
                         searchResult.style.display = 'none';
                     }
+                })
+                .catch(() => {
+                    searchResult.style.display = 'none';
                 });
         });
 
@@ -138,8 +141,17 @@
         jumlahBayarInput.addEventListener('input', function() {
             const total = parseInt(totalHargaInput.value.replace(/[^0-9]/g, '')) || 0;
             const bayar = parseInt(this.value) || 0;
-            const kembali = bayar - total;
-            kembalianInput.value = (kembali > 0 ? 'Rp' + kembali.toLocaleString('id-ID') : 'Rp0');
+            let kembali = bayar - total;
+            if (kembali < 0) kembali = 0;
+            kembalianInput.value = 'Rp' + kembali.toLocaleString('id-ID');
+        });
+
+        // Validasi sebelum submit
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!idTransaksiInput.value) {
+                e.preventDefault();
+                alert('Silakan pilih transaksi terlebih dahulu!');
+            }
         });
     });
 

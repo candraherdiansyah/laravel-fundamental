@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -7,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 class Pembayaran extends Model
 {
     protected $fillable = [
-        'transaksi_id',
+        'id_transaksi',
         'tanggal_bayar',
         'metode_pembayaran',
         'jumlah_bayar',
-        'kembalian'
+        'kembalian',
     ];
 
     public function transaksi()
     {
-        return $this->belongsTo(Transaksi::class, 'transaksi_id');
+        return $this->belongsTo(Transaksi::class, 'id_transaksi');
     }
 }
